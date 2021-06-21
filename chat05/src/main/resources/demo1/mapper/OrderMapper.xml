@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.javacode2018.chat05.demo1.mapper.OrderMapper">
+
+    <resultMap id="orderModelMap2" type="com.javacode2018.chat05.demo1.model.OrderModel">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="create_time" property="createTime" />
+        <result column="up_time" property="upTime" />
+    </resultMap>
+
     <!--将t_order中的字段转换成了和OrderModel中字段一样的名称，最后mybatis内部会通过反射-->
     <select id="getById" resultType="com.javacode2018.chat05.demo1.model.OrderModel">
     <![CDATA[
@@ -11,6 +19,14 @@
 
     <!--数据库表对应的OrderModel类中的字段都是采用骆驼命名法，mybatis中可以进行一些配置，可以使表中的字段和对应OrderModel中骆驼命名法的字段进行自动映射-->
     <select id="getById1" resultType="com.javacode2018.chat05.demo1.model.OrderModel">
+    <![CDATA[
+        SELECT a.id,a.user_id,a.create_time,a.up_time FROM t_order a WHERE a.id = #{value}
+        ]]>
+    </select>
+
+
+    <!--使用结果集映射-->
+    <select id="getById2" resultMap="orderModelMap2">
     <![CDATA[
         SELECT a.id,a.user_id,a.create_time,a.up_time FROM t_order a WHERE a.id = #{value}
         ]]>
