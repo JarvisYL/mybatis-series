@@ -5,6 +5,10 @@
 <configuration>
     <!-- 引入外部jdbc配置 -->
     <properties resource="jdbc.properties"/>
+    <settings>
+        <!-- 是否开启自动驼峰命名规则映射，及从xx_yy映射到xxYy -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
     <!-- 环境配置，可以配置多个环境 -->
     <environments default="demo">
         <environment id="demo">
@@ -23,4 +27,5 @@
     <mappers>
         <mapper resource="demo1/mapper/OrderMapper.xml" />
     </mappers>
+
 </configuration>
