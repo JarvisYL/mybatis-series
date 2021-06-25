@@ -11,5 +11,7 @@ public interface OrderMapper {
     OrderModel getById5(int id);
     OrderModel getById6(int id);
     OrderModel getById7(int id);
+    OrderModel getById8(int id);
+    OrderModel getById9(int id);
 
 }

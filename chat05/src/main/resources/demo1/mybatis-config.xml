@@ -27,6 +27,7 @@
     <mappers>
         <mapper resource="demo1/mapper/OrderMapper.xml" />
         <mapper resource="demo1/mapper/UserMapper.xml" />
+        <mapper resource="demo1/mapper/OrderDetailMapper.xml" />
     </mappers>
 
 </configuration>

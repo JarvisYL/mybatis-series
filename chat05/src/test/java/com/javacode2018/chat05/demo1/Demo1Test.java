@@ -88,5 +88,22 @@ public class Demo1Test {
             log.info("{}", orderModel);
         }
     }
+    @Test
+    public void getById8() {
+        try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
+            OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+            OrderModel orderModel = mapper.getById8(1);
+            log.info("{}", orderModel);
+        }
+    }
+
+    @Test
+    public void getById9() {
+        try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
+            OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+            OrderModel orderModel = mapper.getById9(1);
+            log.info("{}", orderModel);
+        }
+    }
 
 }

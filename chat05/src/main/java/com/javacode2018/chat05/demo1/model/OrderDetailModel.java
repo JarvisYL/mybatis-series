@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDetail {
+public class OrderDetailModel {
     private Integer id;
     private Integer orderId;
     private Integer goodsId;
