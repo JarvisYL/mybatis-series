@@ -42,7 +42,19 @@
         <result column="user_id" property="userId"/>
         <result column="create_time" property="createTime"/>
         <result column="up_time" property="upTime"/>
+        <!--第二个查询传递一个参数-->
         <association property="userModel" select="com.javacode2018.chat05.demo1.mapper.UserMapper.getById1" column="user_id" />
+    </resultMap>
+
+    <!--一对一关联查询方式4-->
+    <resultMap id="orderModelMap5" type="com.javacode2018.chat05.demo1.model.OrderModel">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+        <!--第二个查询传递多个参数，相当于给子查询传递了一个map，子查询中 需要用过map的key获取对应的条件-->
+        <!--仅演示子查询传多个值，并不会真的查出数据，user表中都没有createTime字段-->
+        <association property="userModel" select="com.javacode2018.chat05.demo1.mapper.UserMapper.getById2" column="{uid1=user_id,uid2=create_time}" />
     </resultMap>
 
     <!--将t_order中的字段转换成了和OrderModel中字段一样的名称，最后mybatis内部会通过反射-->
@@ -118,5 +130,19 @@
         ]]>
     </select>
 
+    <!--一对一关联查询方式4-->
+    <select id="getById7" resultMap="orderModelMap5">
+    <![CDATA[
+        SELECT
+            a.id,
+            a.user_id,
+            a.create_time,
+            a.up_time
+        FROM
+            t_order a
+        WHERE
+            a.id = #{value}
+        ]]>
+</select>
 
 </mapper>

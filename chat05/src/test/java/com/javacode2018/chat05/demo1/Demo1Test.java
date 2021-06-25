@@ -80,4 +80,13 @@ public class Demo1Test {
         }
     }
 
+    @Test
+    public void getById7() {
+        try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
+            OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+            OrderModel orderModel = mapper.getById7(2);
+            log.info("{}", orderModel);
+        }
+    }
+
 }

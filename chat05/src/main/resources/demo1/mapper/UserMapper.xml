@@ -2,11 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.javacode2018.chat05.demo1.mapper.UserMapper">
-
+    <!--被用于一对一关联查询方式3-->
     <select id="getById1" resultType="com.javacode2018.chat05.demo1.model.UserModel">
     <![CDATA[
         SELECT id,name FROM t_user where id = #{value}
         ]]>
     </select>
+
+    <!--被用于一对一关联查询方式4-->
+    <!--仅演示子查询传多个值，并不会真的查出数据，user表中都没有createTime字段-->
+    <select id="getById2" resultType="com.javacode2018.chat05.demo1.model.UserModel">
+    <![CDATA[
+        SELECT id,name FROM t_user where id = #{uid1} and id = #{uid2}
+        ]]>
+</select>
 
 </mapper>
