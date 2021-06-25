@@ -14,4 +14,6 @@ public class OrderModel {
     private Integer userId;
     private Long createTime;
     private Long upTime;
+    //下单用户信息
+    private UserModel userModel;
 }

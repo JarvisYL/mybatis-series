@@ -27,15 +27,6 @@ public class Demo1Test {
     }
 
     @Test
-    public void getById() {
-        try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
-            OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
-            OrderModel orderModel = mapper.getById(1);
-            log.info("{}", orderModel);
-        }
-    }
-
-    @Test
     public void getById1() {
         try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
             OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
@@ -48,7 +39,43 @@ public class Demo1Test {
     public void getById2() {
         try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
             OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
-            OrderModel orderModel = mapper.getById2(1);
+            OrderModel orderModel = mapper.getById2(2);
+            log.info("{}", orderModel);
+        }
+    }
+
+    @Test
+    public void getById3() {
+        try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
+            OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+            OrderModel orderModel = mapper.getById3(1);
+            log.info("{}", orderModel);
+        }
+    }
+
+    @Test
+    public void getById4() {
+        try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
+            OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+            OrderModel orderModel = mapper.getById4(1);
+            log.info("{}", orderModel);
+        }
+    }
+
+    @Test
+    public void getById5() {
+        try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
+            OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+            OrderModel orderModel = mapper.getById5(2);
+            log.info("{}", orderModel);
+        }
+    }
+
+    @Test
+    public void getById6() {
+        try (SqlSession sqlSession = this.sqlSessionFactory.openSession(true);) {
+            OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
+            OrderModel orderModel = mapper.getById6(1);
             log.info("{}", orderModel);
         }
     }

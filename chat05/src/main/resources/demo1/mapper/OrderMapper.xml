@@ -3,22 +3,57 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.javacode2018.chat05.demo1.mapper.OrderMapper">
 
-    <resultMap id="orderModelMap2" type="com.javacode2018.chat05.demo1.model.OrderModel">
+
+    <resultMap id="orderModelMap1" type="com.javacode2018.chat05.demo1.model.OrderModel">
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
         <result column="create_time" property="createTime" />
         <result column="up_time" property="upTime" />
     </resultMap>
 
+    <!--一对一关联查询方式1-->
+    <resultMap id="orderModelMap2" type="com.javacode2018.chat05.demo1.model.OrderModel">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+        <!--将查询数据库字段得到的数据，映射给OrderModel对象中的userModel属性-->
+        <result column="user_id" property="userModel.id"/>
+        <result column="name" property="userModel.name"/>
+    </resultMap>
+
+
+    <!--一对一关联查询方式2-->
+    <resultMap id="orderModelMap3" type="com.javacode2018.chat05.demo1.model.OrderModel">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+    <!--注意property属性，这是配置sql查询的结果与OrderModel.userModel对象的映射关系，将user_id和userModel中的id进行映射,name和userModel中的name进行映射-->
+        <association property="userModel">
+            <id column="user_id" property="id"/>
+            <result column="name" property="name" />
+        </association>
+    </resultMap>
+
+    <!--一对一关联查询方式3-->
+    <resultMap id="orderModelMap4" type="com.javacode2018.chat05.demo1.model.OrderModel">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+        <association property="userModel" select="com.javacode2018.chat05.demo1.mapper.UserMapper.getById1" column="user_id" />
+    </resultMap>
+
     <!--将t_order中的字段转换成了和OrderModel中字段一样的名称，最后mybatis内部会通过反射-->
-    <select id="getById" resultType="com.javacode2018.chat05.demo1.model.OrderModel">
+    <select id="getById1" resultType="com.javacode2018.chat05.demo1.model.OrderModel">
     <![CDATA[
         SELECT a.id,a.user_id as userId,a.create_time createTime,a.up_time upTime FROM t_order a WHERE a.id = #{value}
         ]]>
     </select>
 
     <!--数据库表对应的OrderModel类中的字段都是采用骆驼命名法，mybatis中可以进行一些配置，可以使表中的字段和对应OrderModel中骆驼命名法的字段进行自动映射-->
-    <select id="getById1" resultType="com.javacode2018.chat05.demo1.model.OrderModel">
+    <select id="getById2" resultType="com.javacode2018.chat05.demo1.model.OrderModel">
     <![CDATA[
         SELECT a.id,a.user_id,a.create_time,a.up_time FROM t_order a WHERE a.id = #{value}
         ]]>
@@ -26,9 +61,62 @@
 
 
     <!--使用结果集映射-->
-    <select id="getById2" resultMap="orderModelMap2">
+    <select id="getById3" resultMap="orderModelMap1">
     <![CDATA[
         SELECT a.id,a.user_id,a.create_time,a.up_time FROM t_order a WHERE a.id = #{value}
         ]]>
     </select>
+
+    <!--一对一关联查询方式1-->
+    <select id="getById4" resultMap="orderModelMap2">
+    <![CDATA[
+        SELECT
+            a.id,
+            a.user_id,
+            a.create_time,
+            a.up_time,
+            b.name
+        FROM
+            t_order a,
+            t_user b
+        WHERE
+            a.user_id = b.id
+          AND a.id = #{value}
+        ]]>
+    </select>
+
+    <!--一对一关联查询方式2-->
+    <select id="getById5" resultMap="orderModelMap3">
+    <![CDATA[
+        SELECT
+            a.id,
+            a.user_id,
+            a.create_time,
+            a.up_time,
+            b.name
+        FROM
+            t_order a,
+            t_user b
+        WHERE
+            a.user_id = b.id
+          AND a.id = #{value}
+        ]]>
+    </select>
+
+    <!--一对一关联查询方式3-->
+    <select id="getById6" resultMap="orderModelMap4">
+    <![CDATA[
+        SELECT
+            a.id,
+            a.user_id,
+            a.create_time,
+            a.up_time
+        FROM
+            t_order a
+        WHERE
+            a.id = #{value}
+        ]]>
+    </select>
+
+
 </mapper>
