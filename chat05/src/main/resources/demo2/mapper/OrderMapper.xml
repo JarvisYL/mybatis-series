@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javacode2018.chat05.demo2.mapper.OrderMapper">
+<!--********************************************************************************************************************************************-->
+   <!--延迟加载-->
+    <resultMap id="orderModelMap1" type="com.javacode2018.chat05.demo2.model.OrderModel">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+        <!--
+                延迟加载：是将数据加载时机推迟，比如推迟嵌套查询的执行时机，当需要查看关联的数据时，再去执行对应的关联查询，返回需要的结果（不是多表链接查询）
+                嵌套查询：通过两次或以上次查询，组合成目标结果
+                关联查询，一般我们使用association、collection两个元素，这两个元素都存在属性fetchType，通过这个属性可以指定关联查询的加载方式。
+                fetchType值：eager：立即加载
+                            lazy：延迟加载
+        -->
+        <!--  通过订单中user_id作为条件，查询下单人信息 -->
+        <association property="userModel" fetchType="eager" select="com.javacode2018.chat05.demo2.mapper.UserMapper.getById1" column="user_Id"/>
+        <!--  通过订单id作为条件，查询详情列表 -->
+        <collection property="orderDetailModelList" fetchType="lazy" select="com.javacode2018.chat05.demo2.mapper.OrderDetailMapper.getListByOrderId1" column="id"/>
+    </resultMap>
+
+    <select id="getById1" resultMap="orderModelMap1">
+    <![CDATA[
+        SELECT
+            a.id ,
+            a.user_id,
+            a.create_time,
+            a.up_time
+        FROM
+            t_order a
+        WHERE
+            a.id = #{value}
+        ]]>
+    </select>
+
+<!--********************************************************************************************************************************************-->
+    <!--鉴别器discriminator-->
+    <resultMap id="orderModelMap2" type="com.javacode2018.chat05.demo2.model.OrderModel">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+        <!-- 鉴别器 -->
+        <!--
+            javaType：该属性用于指定列的类型，保证使用相同的java类型来比较值
+            column：该属性用于设置表中哪一个字段来与case value进行值的比较，当字段中的值与case value匹配的时候，结果集会走这个case关联的映射
+        -->
+        <discriminator javaType="int" column="id">
+            <case value="1">
+                <!--通过用户id查询用户信息-->
+                <association property="userModel" select="com.javacode2018.chat05.demo2.mapper.UserMapper.getById1" column="user_Id"/>
+            </case>
+            <case value="2">
+                <!--通过用户id查询用户信息-->
+                <association property="userModel" select="com.javacode2018.chat05.demo2.mapper.UserMapper.getById1" column="user_Id"/>
+                <!--通过订单id查询订单列表-->
+                <collection property="orderDetailModelList" select="com.javacode2018.chat05.demo2.mapper.OrderDetailMapper.getListByOrderId1" column="id"/>
+            </case>
+        </discriminator>
+    </resultMap>
+
+    <select id="getById2" resultMap="orderModelMap2">
+    <![CDATA[
+        SELECT
+            a.id ,
+            a.user_id,
+            a.create_time,
+            a.up_time
+        FROM
+            t_order a
+        WHERE
+            a.id = #{value}
+        ]]>
+    </select>
+<!--********************************************************************************************************************************************-->
+
+    <!--继承(extends)-->
+    <resultMap id="orderModelMap3" type="com.javacode2018.chat05.demo2.model.OrderModel">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+        <!-- 鉴别器 -->
+        <!--
+            javaType：该属性用于指定列的类型，保证使用相同的java类型来比较值
+            column：该属性用于设置表中哪一个字段来与case value进行值的比较，当字段中的值与case value匹配的时候，结果集会走这个case关联的映射
+        -->
+        <discriminator javaType="int" column="id">
+            <case value="1" resultMap="orderModelMap4"/>
+            <case value="2" resultMap="orderModelMap5"/>
+        </discriminator>
+    </resultMap>
+
+    <!--extends="被继承的resultMap的id"-->
+    <resultMap id="orderModelMap4" type="com.javacode2018.chat05.demo2.model.OrderModel" extends="orderModelMap3">
+        <!--通过用户id查询用户信息-->
+        <association property="userModel" select="com.javacode2018.chat05.demo2.mapper.UserMapper.getById1" column="user_Id"/>
+    </resultMap>
+
+
+    <resultMap id="orderModelMap5" type="com.javacode2018.chat05.demo2.model.OrderModel" extends="orderModelMap3">
+        <!--通过订单id查询订单列表-->
+        <collection property="orderDetailModelList" select="com.javacode2018.chat05.demo2.mapper.OrderDetailMapper.getListByOrderId1" column="id"/>
+    </resultMap>
+
+    <select id="getById3" resultMap="orderModelMap2">
+    <![CDATA[
+        SELECT
+            a.id ,
+            a.user_id,
+            a.create_time,
+            a.up_time
+        FROM
+            t_order a
+        WHERE
+            a.id = #{value}
+        ]]>
+    </select>
+
+
+
+
+</mapper>
